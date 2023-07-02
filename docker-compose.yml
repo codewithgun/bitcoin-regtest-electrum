@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  bitcoind-regtest:
+    build:
+      context: ./
+      dockerfile: ./bitcoin-service/Dockerfile
+    environment:
+      RPC_PORT: ${RPC_PORT}
+      RPC_PASSWORD: ${RPC_PASSWORD}
+      RPC_USER: ${RPC_USER}
+      COINBASE_ADDRESS: ${COINBASE_ADDRESS}
+    networks:
+      regtest:
+        ipv4_address: 192.168.254.2
+
+  electrumx-server:
+    image: lukechilds/electrumx
+    depends_on:
+      - bitcoind-regtest
+    ports:
+      - "50002:50002"
+    environment:
+      - DAEMON_URL=${RPC_USER}:${RPC_PASSWORD}@192.168.254.2:${RPC_PORT}
+      - COIN=BitcoinSegwit
+      - NET=regtest
+      - SERVICES=tcp://0.0.0.0:50002
+    networks:
+      regtest:
+        ipv4_address: 192.168.254.3
+
+# Modify network need to update rpcallowip of bitcoind in entrypoint.sh
+networks:
+  regtest:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.254.0/24
+          gateway: 192.168.254.1
