@@ -4,6 +4,8 @@ const bitcoin = require("bitcoinjs-lib");
 // const url = "blackie.c3-soft.com";
 // const port = 57005;
 
+// TODO: auto mining
+
 function execute(url, port, method, params) {
   return new Promise((res) => {
     const client = new net.Socket();

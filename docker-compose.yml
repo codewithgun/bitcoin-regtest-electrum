@@ -10,6 +10,7 @@ services:
       RPC_PASSWORD: ${RPC_PASSWORD}
       RPC_USER: ${RPC_USER}
       COINBASE_ADDRESS: ${COINBASE_ADDRESS}
+      BLOCK_TIME: ${BLOCK_TIME}
     networks:
       regtest:
         ipv4_address: 192.168.254.2
